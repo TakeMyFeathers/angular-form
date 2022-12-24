@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
 import {UserService} from "../user.service";
-import {FormArray, FormBuilder, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-user-table',
@@ -66,6 +66,13 @@ export class UserTableComponent implements OnInit {
 
     this.users.removeAt(index);
     this.data = this.data.filter(user => user.id !== userId);
+  }
+
+  cancelEdit(rowIndex: number) {
+    this.toggleEdit(this.data[rowIndex].id);
+    (this.users.controls[rowIndex] as FormGroup).controls['name'].setValue(this.data[rowIndex].name);
+    (this.users.controls[rowIndex] as FormGroup).controls['email'].setValue(this.data[rowIndex].email);
+    (this.users.controls[rowIndex] as FormGroup).controls['phone'].setValue(this.data[rowIndex].phone);
   }
 
   updateUser(userId: number) {
