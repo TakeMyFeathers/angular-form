@@ -8,12 +8,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from './form/add-user/add-user.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { UserTableComponent } from './user-table/user-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    AddUserComponent
+    AddUserComponent,
+    UserTableComponent
   ],
   imports: [
     BrowserModule,
