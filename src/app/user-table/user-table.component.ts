@@ -8,13 +8,15 @@ import {FormArray, FormBuilder, Validators} from "@angular/forms";
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss']
 })
+
 export class UserTableComponent implements OnInit {
   form = this.fb.group({
     users: this.fb.array([])
   });
+
   data: User[] = []
 
-  isEditable: boolean[] = []
+  isEditable: Map<string, boolean> = new Map()
 
   constructor(private fb: FormBuilder, private userService: UserService) {
   }
@@ -26,7 +28,8 @@ export class UserTableComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUsers().subscribe(res => {
       this.data = res as User[];
-      for (const [i, row] of this.data.entries()) {
+
+      for (const row of this.data) {
         const {name, email, phone} = row;
         this.users.push(
           this.fb.group({
@@ -40,33 +43,51 @@ export class UserTableComponent implements OnInit {
             ]]
           })
         )
-        this.isEditable[i] = false;
+
+        this.isEditable.set(row.id.toString(), false)
       }
     })
   }
 
-  toggleEdit(rowIndex: number) {
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+  toggleEdit(userId: number) {
+    const id = userId.toString();
+    const currentState = this.isEditable.get(id) || false;
+    this.isEditable.set(id, !currentState);
   }
 
-  deleteUser(rowIndex: number) {
-    this.userService.deleteUser(this.data[rowIndex].id).subscribe(res => {
+  deleteUser(userId: number) {
+    const index = this.data.findIndex((user) => user.id === userId)
+    if (userId === -1) {
+      return;
+    }
+
+    this.userService.deleteUser(userId).subscribe(res => {
       console.log("success")
     });
-    this.users.removeAt(rowIndex);
+
+    this.users.removeAt(index);
+    this.data = this.data.filter(user => user.id !== userId);
   }
 
-  updateUser(rowIndex: number) {
+  updateUser(userId: number) {
     const formData = this.form.controls.users.value[0] as Omit<User, "id" | "password">;
+
+    const currUserIndex = this.data.findIndex(user => user.id === userId);
+
+    if (currUserIndex === -1) {
+      return;
+    }
+
     const user = {
-      id: this.data[rowIndex].id,
+      id: userId,
       name: formData.name,
       email: formData.email,
-      password: this.data[rowIndex].password,
+      password: this.data[currUserIndex].password,
       phone: formData.phone
     }
-    this.data[rowIndex] = user;
+
+    this.data[currUserIndex] = user;
     this.userService.updateUser(user);
-    this.toggleEdit(rowIndex);
+    this.toggleEdit(userId);
   }
 }

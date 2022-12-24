@@ -18,7 +18,7 @@
         </td>
 
         <ng-container
-          *ngIf="isEditable[i]; then editable; else nonEditable">
+          *ngIf="isEditable.get(data[i].id.toString()); then editable; else nonEditable">
         </ng-container>
 
         <ng-template #editable>
@@ -36,9 +36,10 @@
           </td>
 
           <td class="d-flex gap-3">
-            <button (click)="updateUser(i)" [disabled]="form.controls.users.invalid" class="btn btn-primary">Save
+            <button (click)="updateUser(data[i].id)" [disabled]="form.controls.users.invalid" class="btn btn-primary">
+              Save
             </button>
-            <button (click)="toggleEdit(i)" class="btn btn-primary">Cancel</button>
+            <button (click)="toggleEdit(data[i].id)" class="btn btn-primary">Cancel</button>
           </td>
         </ng-template>
 
@@ -54,8 +55,8 @@
           </td>
           <td class="d-flex gap-3">
             <button class="btn btn-primary">Details</button>
-            <button (click)="toggleEdit(i)" class="btn btn-primary">Edit</button>
-            <button (click)="deleteUser(i)" class="btn btn-primary">Delete</button>
+            <button (click)="toggleEdit(data[i].id)" class="btn btn-primary">Edit</button>
+            <button (click)="deleteUser(data[i].id)" class="btn btn-primary">Delete</button>
           </td>
         </ng-template>
       </tr>
