@@ -1,0 +1,35 @@
+<div class="border rounded p-5">
+  <form [formGroup]="form" (submit)="submit()" class="d-flex flex-column gap-4">
+    <div class="form-group d-flex flex-column gap-2">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
+      <div *ngIf="form.controls['name'].invalid && form.controls['name'].dirty" class="alert alert-danger">
+        Field Name is required
+      </div>
+    </div>
+    <div class="form-group d-flex flex-column gap-2">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" formControlName="password"
+             placeholder="Enter your password">
+      <div *ngIf="form.controls['password'].invalid && form.controls['password'].dirty" class="alert alert-danger">
+        Field Password is required
+      </div>
+    </div>
+    <div class="form-group d-flex flex-column gap-2">
+      <label for="email">Email</label>
+      <input type="text" class="form-control" id="email" formControlName="email"
+             placeholder="Enter your email">
+      <div *ngIf="form.controls['email'].invalid && form.controls['email'].dirty" class="alert alert-danger">
+        Invalid email
+      </div>
+    </div>
+    <div class="form-group d-flex flex-column gap-2">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" formControlName="phone">
+      <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].dirty" class="alert alert-danger">
+        Invalid phone number
+      </div>
+    </div>
+    <button [disabled]="form.invalid" type="submit" class="btn px-5 btn-primary align-self-start">Submit</button>
+  </form>
+</div>

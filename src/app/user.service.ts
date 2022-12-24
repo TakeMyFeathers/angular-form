@@ -6,7 +6,7 @@ import {User} from "./model/user";
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiceService {
+export class UserService {
   private userUrl = 'api/user';
 
   httpsOptions = {
@@ -26,7 +26,7 @@ export class UserServiceService {
 
   addUser(user: Omit<User, "id">): Observable<User> {
     return this.http.post<User>(this.userUrl, user, this.httpsOptions).pipe(
-      tap((newUser: User) => console.log(`Added user ${user.name}|${user.email}`)),
+      tap((newUser: User) => console.log(`Added user ${newUser.name}|${newUser.email}`)),
       catchError(this.handleError<User>('addUser'))
     )
   }
