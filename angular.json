@@ -72,7 +72,8 @@
               "browserTarget": "angular-form:build:production"
             },
             "development": {
-              "browserTarget": "angular-form:build:development"
+              "browserTarget": "angular-form:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
