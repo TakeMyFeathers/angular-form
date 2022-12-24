@@ -73,21 +73,23 @@ export class UserTableComponent implements OnInit {
     const formData = this.form.controls.users.value[0] as Omit<User, "id" | "password">;
 
     const currUserIndex = this.data.findIndex(user => user.id === userId);
-
     if (currUserIndex === -1) {
       return;
     }
 
-    const user = {
+    const currUser = this.data[currUserIndex];
+
+    const newUser = {
       id: userId,
       name: formData.name,
       email: formData.email,
-      password: this.data[currUserIndex].password,
-      phone: formData.phone
+      phone: formData.phone,
+      password: currUser.password
     }
 
-    this.data[currUserIndex] = user;
-    this.userService.updateUser(user);
+    this.data[currUserIndex] = newUser;
+    this.userService.updateUser(newUser).subscribe(res => {
+    });
     this.toggleEdit(userId);
   }
 }
