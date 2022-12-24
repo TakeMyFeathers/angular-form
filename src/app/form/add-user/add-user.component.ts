@@ -25,7 +25,7 @@ export class AddUserComponent {
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
   }
 
-  submit(): void {
+  onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
