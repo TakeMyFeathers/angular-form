@@ -25,24 +25,24 @@ export class UserTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(res => {
-      this.data = res;
+      this.data = res as User[];
+      for (const [i, row] of this.data.entries()) {
+        const {name, email, phone} = row;
+        this.users.push(
+          this.fb.group({
+            name: [name, [Validators.required]],
+            email: [email, [Validators.required, Validators.email]],
+            phone: [phone, [
+              Validators.required,
+              Validators.minLength(9),
+              Validators.maxLength(9),
+              Validators.pattern(/^[0-9]*$/i)
+            ]]
+          })
+        )
+        this.isEditable[i] = false;
+      }
     })
-    for (const [i, row] of this.data.entries()) {
-      const {name, email, phone} = row;
-      this.users.push(
-        this.fb.group({
-          name: [name, [Validators.required]],
-          email: [email, [Validators.required, Validators.email]],
-          phone: [phone, [
-            Validators.required,
-            Validators.minLength(9),
-            Validators.maxLength(9),
-            Validators.pattern(/^[0-9]*$/i)
-          ]]
-        })
-      )
-      this.isEditable[i] = false;
-    }
   }
 
   toggleEdit(rowIndex: number) {
@@ -50,8 +50,10 @@ export class UserTableComponent implements OnInit {
   }
 
   deleteUser(rowIndex: number) {
+    this.userService.deleteUser(this.data[rowIndex].id).subscribe(res => {
+      console.log("success")
+    });
     this.users.removeAt(rowIndex);
-    this.userService.deleteUser(this.data[rowIndex].id);
   }
 
   updateUser(rowIndex: number) {
