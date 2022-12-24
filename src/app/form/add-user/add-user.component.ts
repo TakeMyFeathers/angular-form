@@ -38,8 +38,8 @@ export class AddUserComponent {
       phone: phone.value
     }
 
-    this.userService.addUser(user);
-    this.router.navigate(['/']);
+    this.userService.addUser(user).subscribe(res => {
+      this.router.navigate(['/']);
+    });
   }
-
 }
