@@ -39,7 +39,7 @@
             <button (click)="updateUser(data[i].id)" [disabled]="form.controls.users.invalid" class="btn btn-primary">
               Save
             </button>
-            <button (click)="toggleEdit(data[i].id)" class="btn btn-primary">Cancel</button>
+            <button (click)="cancelEdit(i)" class="btn btn-primary">Cancel</button>
           </td>
         </ng-template>
 
