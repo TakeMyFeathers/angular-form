@@ -32,7 +32,7 @@ export class UserService {
   }
 
   deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(this.userUrl, this.httpsOptions).pipe(
+    return this.http.delete<User>(`${this.userUrl}/${id}`, this.httpsOptions).pipe(
       tap(_ => console.log(`Deleted user id=${id}`)),
       catchError(this.handleError<User>('deleteUser'))
     );
