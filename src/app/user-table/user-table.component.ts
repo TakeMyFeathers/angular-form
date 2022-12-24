@@ -68,6 +68,10 @@ export class UserTableComponent implements OnInit {
     this.data = this.data.filter(user => user.id !== userId);
   }
 
+  isFormValid(formIndex: number) {
+    return this.users.controls[formIndex].valid;
+  }
+
   cancelEdit(rowIndex: number) {
     this.toggleEdit(this.data[rowIndex].id);
     (this.users.controls[rowIndex] as FormGroup).controls['name'].setValue(this.data[rowIndex].name);
@@ -75,27 +79,21 @@ export class UserTableComponent implements OnInit {
     (this.users.controls[rowIndex] as FormGroup).controls['phone'].setValue(this.data[rowIndex].phone);
   }
 
-  updateUser(userId: number) {
-    const formData = this.form.controls.users.value[0] as Omit<User, "id" | "password">;
-
-    const currUserIndex = this.data.findIndex(user => user.id === userId);
-    if (currUserIndex === -1) {
-      return;
-    }
-
-    const currUser = this.data[currUserIndex];
+  updateUser(formIndex: number) {
+    const formData = this.form.controls.users.value[formIndex] as Omit<User, "id" | "password">;
+    const currUser = this.data[formIndex];
 
     const newUser = {
-      id: userId,
+      id: currUser.id,
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
       password: currUser.password
     }
 
-    this.data[currUserIndex] = newUser;
+    this.data[formIndex] = newUser;
     this.userService.updateUser(newUser).subscribe(res => {
     });
-    this.toggleEdit(userId);
+    this.toggleEdit(currUser.id);
   }
 }
