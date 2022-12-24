@@ -62,7 +62,6 @@ export class UserTableComponent implements OnInit {
     }
 
     this.userService.deleteUser(userId).subscribe(res => {
-      console.log("success")
     });
 
     this.users.removeAt(index);
